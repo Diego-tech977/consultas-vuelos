@@ -1,6 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 
-public class vuelo {
+public class Vuelos {
     [BsonId, BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
 
     public string? Id { get; set; }
@@ -11,10 +11,10 @@ public class vuelo {
    [BsonElement("ciudad_origen")]
    public string CiudadOrigen { get; set; } = string.Empty;
     
-    [BsonElement("aeropurto_origen")]
+    [BsonElement("aeropuerto_origen")]
     public string AeropuertoOrigen { get; set; } = string.Empty;
     
-    [BsonElement("pais_destio")]
+    [BsonElement("pais_destino")]
     public string PaiDestino { get; set; } = string.Empty;
     
     [BsonElement("ciudad_destino")]
