@@ -38,7 +38,7 @@ public class VuelosController : ControllerBase {
 
         var lista = collection.Distinct<string>("EstatusVuelo", FilterDefinition<Vuelos>.Empty).ToList();
         
-        return Ok();
+        return Ok(lista);
 
 
     }    

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListadoVuelos from "./ListadoVuelos";
 
 type Ciudad = {
@@ -13,11 +13,50 @@ type EstatusVuelo = {
 const BuscadorVuelos = () => {
     const [ciudadesOrigen, setCiudadesOrigen] = useState<Ciudad[]>([]);
     const [ciudadesDestino, setCiudadesDestino] = useState<Ciudad[]>([]);
-    const [listarEstatus, setListaEstatus] = useState<EstatusVuelo[]>([]);
+    const [listaEstatus, setListaEstatus] = useState<EstatusVuelo[]>([]);
 
-    const ListarCiudadesOrigen = () => {
+    const ListarCiudadesOrigen = async() => {
+        const response = await fetch("http://localhost:5000/api/vuelos/ciudades-origen");
+        if(response.ok) {
+            const arr = await response.json();
+            let ciudades : Array<Ciudad> = [];
+            
+            arr.map( (x: string) => ciudades.push({Nombre: x}));
+
+            setCiudadesOrigen(ciudades);
+        }
 
     }
+
+    const ListarCiudadesDestino = async() => {
+        const response = await fetch("http://localhost:5000/api/vuelos/ciudades-destino");
+        if(response.ok) {
+            const arr = await response.json();
+            let ciudades : Array<Ciudad> = [];
+            
+            arr.map( (x: string) => ciudades.push({Nombre: x}));
+
+            setCiudadesDestino(ciudades);
+        }
+
+    }
+
+    const listarEstatus = async () => {
+        const response = await fetch("http://localhost:5000/api/vuelos/estatus");
+        if(response.ok){
+            const arr = await response.json();
+            let estatus : Array<EstatusVuelo> = [];
+            arr.map((x: string) => estatus.push({Nombre: x}));
+
+            setListaEstatus(estatus);
+        }
+    }
+
+    useEffect(()=> {
+        ListarCiudadesOrigen();
+        ListarCiudadesDestino();
+        listarEstatus();
+    }, []);
 
     return (
         <>
@@ -43,21 +82,36 @@ const BuscadorVuelos = () => {
                         <div className="col-sm-4">
                             <div className="mb-3">
                                 <label>Origen</label>
-                                <select className="form-control"></select>
+                                <select className="form-control"> 
+                                    <option value="">(Todos)</option>
+                                    {
+                                        ciudadesOrigen.map(x => <option key={x.Nombre} value={x.Nombre}>{x.Nombre}</option>)
+                                    }
+                                </select>
                             </div>
                         </div>
 
                         <div className="col-sm-4">
                             <div className="mb-3">
                                 <label>Destino</label>
-                                <select className="form-control"></select>
+                                <select className="form-control">
+                                    <option value="">(Todos)</option>
+                                    {
+                                        ciudadesDestino.map(x => <option key={x.Nombre} value={x.Nombre}>{x.Nombre}</option>)
+                                    }
+                                </select>
                             </div>
                         </div>
 
                         <div className="col-sm-4">
                             <div className="mb-3">
                                 <label>Estatus</label>
-                                <select className="form-control"></select>
+                                <select className="form-control">
+                                     <option value="">(Todos)</option>
+                                    {
+                                        listaEstatus.map(x => <option key={x.Nombre} value={x.Nombre}>{x.Nombre}</option>)
+                                    }
+                                </select>
                             </div>
                         </div>
 
